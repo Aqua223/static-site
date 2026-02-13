@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Алмаз Байбаков · Портфолио</title>
+    <!-- Google Fonts для элегантного начертания -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (бесплатный набор иконок) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* -------------------------------
+           СБРОС И ПЕРЕМЕННЫЕ
+        ------------------------------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #f9fafc;
+            --surface: #ffffff;
+            --primary: #1e3c5c;    /* глубокий синий — интеллект, стабильность */
+            --primary-light: #2e5572;
+            --accent: #d4af37;      /* благородный золотой — шахматы, математика */
+            --text-main: #1f2a44;
+            --text-soft: #3e4a5e;
+            --text-light: #6a7c8f;
+            --border: #e4e9f2;
+            --card-shadow: 0 12px 30px rgba(0,0,0,0.04), 0 4px 10px rgba(0,20,40,0.02);
+            --hover-shadow: 0 24px 44px rgba(0,0,0,0.06), 0 8px 20px rgba(30,60,90,0.06);
+            --radius-card: 24px;
+            --radius-btn: 40px;
+            --transition: all 0.25s ease;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.55;
+            padding: 2rem 1.5rem;
+        }
+
+        .container {
+            max-width: 1180px;
+            margin: 0 auto;
+            background: var(--surface);
+            border-radius: 36px;
+            box-shadow: var(--card-shadow);
+            padding: 2.8rem 2.5rem;
+            transition: var(--transition);
+        }
+
+        @media (max-width: 600px) {
+            body { padding: 1.2rem 0.8rem; }
+            .container { padding: 2rem 1.5rem; border-radius: 28px; }
+        }
+
+        /* -------------------------------
+           ТИПОГРАФИЯ И ЗАГОЛОВКИ
+        ------------------------------- */
+        h1, h2, h3 {
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        h1 {
+            font-size: 2.9rem;
+            font-weight: 700;
+            line-height: 1.1;
+            color: var(--primary);
+            margin-bottom: 0.3rem;
+        }
+
+        h2 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            color: var(--primary-light);
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2 i {
+            color: var(--accent);
+            font-size: 1.8rem;
+        }
+
+        h3 {
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            color: var(--primary);
+        }
+
+        /* -------------------------------
+           ПРОФИЛЬ / ШАПКА
+        ------------------------------- */
+        .profile-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 2rem;
+        }
+
+        .title-sub {
+            font-size: 1.25rem;
+            font-weight: 400;
+            color: var(--text-soft);
+            margin-top: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .title-sub i {
+            color: var(--accent);
+        }
+
+        .avatar-placeholder {
+            background: linear-gradient(145deg, #e0e6f0, #f0f4fa);
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.4rem;
+            font-weight: 500;
+            color: var(--primary);
+            border: 4px solid white;
+            box-shadow: 0 8px 18px rgba(30,60,90,0.08);
+        }
+
+        /* -------------------------------
+           КАРТОЧКИ УВЛЕЧЕНИЙ / СЕТКА
+        ------------------------------- */
+        .interests-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 1.8rem;
+            margin: 2.8rem 0 2.2rem;
+        }
+
+        .interest-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-card);
+            padding: 1.9rem 1.4rem 1.6rem;
+            transition: var(--transition);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.01);
+            text-align: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .interest-card:hover {
+            border-color: transparent;
+            box-shadow: var(--hover-shadow);
+            transform: translateY(-6px);
+            background: white;
+        }
+
+        .interest-icon {
+            font-size: 2.7rem;
+            color: var(--primary);
+            margin-bottom: 1.1rem;
+            background: rgba(30,60,92,0.04);
+            width: 74px;
+            height: 74px;
+            line-height: 74px;
+            text-align: center;
+            border-radius: 24px;
+            margin-left: auto;
+            margin-right: auto;
+            transition: var(--transition);
+        }
+
+        .interest-card:hover .interest-icon {
+            background: var(--primary);
+            color: white;
+        }
+
+        .interest-card h3 {
+            margin-bottom: 0.6rem;
+            font-size: 1.5rem;
+        }
+
+        .interest-desc {
+            color: var(--text-soft);
+            font-size: 0.98rem;
+            font-weight: 400;
+            margin-top: 0.5rem;
+        }
+
+        /* -------------------------------
+           ОБ АВТОРЕ / БИО
+        ------------------------------- */
+        .bio-section {
+            background: #f1f5fb;
+            border-radius: 28px;
+            padding: 2.2rem 2.2rem;
+            margin: 2.2rem 0 2.8rem;
+            border-left: 6px solid var(--accent);
+        }
+
+        .bio-text {
+            font-size: 1.12rem;
+            color: var(--text-main);
+            margin-bottom: 1.2rem;
+        }
+
+        .highlight {
+            font-weight: 600;
+            color: var(--primary);
+            background: linear-gradient(to right, rgba(212,175,55,0.1), transparent);
+            padding: 0.1rem 0.4rem;
+        }
+
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 1.4rem;
+        }
+
+        .tag {
+            background: white;
+            padding: 0.5rem 1.3rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--primary);
+            border: 1px solid #cddae6;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.01);
+            transition: var(--transition);
+        }
+
+        .tag i {
+            margin-right: 6px;
+            color: var(--accent);
+        }
+
+        .tag:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .tag:hover i {
+            color: white;
+        }
+
+        /* -------------------------------
+           ССЫЛКИ / КОНТАКТЫ
+        ------------------------------- */
+        .contact-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.6rem;
+            margin-top: 2.5rem;
+            padding-top: 1.8rem;
+            border-top: 2px solid var(--border);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.7rem;
+            background: transparent;
+            border: 1.5px solid var(--primary);
+            padding: 0.8rem 2rem;
+            border-radius: var(--radius-btn);
+            font-weight: 600;
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+
+        .btn i {
+            font-size: 1.1rem;
+        }
+
+        .btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 8px 18px rgba(30,60,92,0.12);
+            transform: scale(1.02);
+        }
+
+        .btn-highlight {
+            background: var(--primary);
+            color: white;
+            border: 1.5px solid var(--primary);
+        }
+        .btn-highlight:hover {
+            background: var(--primary-light);
+            border-color: var(--primary-light);
+        }
+
+        /* -------------------------------
+           ДОПОЛНИТЕЛЬНО: СПОРТ. ПРОГР И МАТЕМ.
+        ------------------------------- */
+        .feature-note {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            background: #fcf9ea;
+            padding: 1.2rem 2rem;
+            border-radius: 48px;
+            color: var(--primary);
+            margin-top: 1.8rem;
+        }
+        .feature-note i {
+            color: var(--accent);
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+
+        /* -------------------------------
+           АДАПТАЦИЯ
+        ------------------------------- */
+        @media (max-width: 700px) {
+            h1 { font-size: 2.2rem; }
+            .profile-header { flex-direction: column; align-items: start; gap: 1.2rem; }
+            .avatar-placeholder { width: 90px; height: 90px; font-size: 2.8rem; }
+            .contact-links { flex-direction: column; align-items: stretch; }
+            .btn { justify-content: center; }
+            .interests-grid { grid-template-columns: 1fr; }
+        }
+
+        /* декоративный момент */
+        .chess-king {
+            color: var(--accent);
+        }
+        .signature {
+            font-weight: 300;
+            margin-top: 2rem;
+            text-align: right;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            border-top: 1px dashed var(--border);
+            padding-top: 1.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ШАПКА: Имя + визуальный якорь -->
+        <div class="profile-header">
+            <div>
+                <h1>Алмаз Байбаков</h1>
+                <div class="title-sub">
+                    <i class="fas fa-chess-queen chess-king"></i>
+                    <span>логика · скорость · алгоритмы</span>
+                </div>
+                <!-- краткий девиз /定位 -->
+                <div style="margin-top: 0.9rem; color: var(--text-soft); font-size: 1.02rem;">
+                    <i class="fas fa-map-pin" style="color: var(--accent);"></i> Казань · 23 года
+                </div>
+            </div>
+            <div class="avatar-placeholder">
+                <span>АБ</span> <!-- инициалы Алмаза Байбакова -->
+            </div>
+        </div>
+
+        <!-- ОСНОВНАЯ ИНФОРМАЦИЯ ОБ АВТОРЕ (БИО) -->
+        <div class="bio-section">
+            <div style="display: flex; gap: 8px; align-items: baseline; margin-bottom: 0.8rem;">
+                <i class="fas fa-pencil-alt" style="color: var(--accent); font-size: 1.5rem;"></i>
+                <h2 style="margin-bottom: 0; font-size: 1.7rem;">об авторе</h2>
+            </div>
+            <div class="bio-text">
+                <span class="highlight">Алмаз Байбаков</span> — аналитик данных и разработчик.
+                Финалист ICPC, призёр всероссийских олимпиад по математике.
+                Сочетает академический подход и страсть к интеллектуальным видам спорта.
+                В портфолио — проекты в области машинного обучения, цифровая обработка сигналов
+                и спортивное программирование.
+            </div>
+            <!-- Ключевые навыки в виде тэгов (увлечения подсвечены) -->
+            <div class="tag-list">
+                <span class="tag"><i class="fas fa-chess"></i> шахматы (1-й разряд)</span>
+                <span class="tag"><i class="fas fa-table-tennis"></i> настольный теннис</span>
+                <span class="tag"><i class="fas fa-code"></i> спорт. прог.</span>
+                <span class="tag"><i class="fas fa-square-root-alt"></i> математика</span>
+                <span class="tag"><i class="fas fa-database"></i> Python / C++</span>
+            </div>
+        </div>
+
+        <!-- БЛОК УВЛЕЧЕНИЙ: ЧЕТЫРЕ СТИХИИ АЛМАЗА -->
+        <h2 style="margin-top: 0.5rem;">
+            <i class="fas fa-heart" style="color: #d4af37;"></i> увлечения
+        </h2>
+        <div class="interests-grid">
+            <!-- 1. ШАХМАТЫ -->
+            <div class="interest-card">
+                <div class="interest-icon">
+                    <i class="fas fa-chess-knight"></i>
+                </div>
+                <h3>Шахматы</h3>
+                <div style="color: var(--accent); margin-bottom: 6px;">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                </div>
+                <p class="interest-desc">
+                    Кандидат в мастера, чемпион университета 2023. Любимый дебют — сицилианская защита.
+                </p>
+            </div>
+            <!-- 2. НАСТОЛЬНЫЙ ТЕННИС -->
+            <div class="interest-card">
+                <div class="interest-icon">
+                    <i class="fas fa-table-tennis"></i>
+                </div>
+                <h3>Настольный теннис</h3>
+                <div style="color: var(--accent); margin-bottom: 6px;">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p class="interest-desc">
+                    Игрок сборной института, быстрая реакция и топ-спин справа — коронный приём.
+                </p>
+            </div>
+            <!-- 3. СПОРТИВНОЕ ПРОГРАММИРОВАНИЕ -->
+            <div class="interest-card">
+                <div class="interest-icon">
+                    <i class="fas fa-terminal"></i>
+                </div>
+                <h3>Спорт. прог.</h3>
+                <div style="color: var(--accent); margin-bottom: 6px;">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p class="interest-desc">
+                    2100+ рейтинг Codeforces, финалист NERC, тренер университетской сборной.
+                </p>
+            </div>
+            <!-- 4. МАТЕМАТИКА -->
+            <div class="interest-card">
+                <div class="interest-icon">
+                    <i class="fas fa-square-root-alt"></i>
+                </div>
+                <h3>Математика</h3>
+                <div style="color: var(--accent); margin-bottom: 6px;">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                </div>
+                <p class="interest-desc">
+                    Специализация — теория чисел и комбинаторика. Призёр студенческих олимпиад.
+                </p>
+            </div>
+        </div>
+
+        <!-- ДОПОЛНИТЕЛЬНЫЙ БЛОК "ПЕРЕСЕЧЕНИЕ ИНТЕРЕСОВ" – связь математики и программирования -->
+        <div class="feature-note">
+            <span style="display: flex; align-items: center;">
+                <i class="fas fa-calculator"></i>
+                <span style="font-weight: 600;">математика + программирование:</span>
+            </span>
+            <span style="color: var(--text-main);">
+                Алмаз разработал <strong>шахматный движок</strong> на базе нейросетей и ведёт курс по олимпиадной математике.
+            </span>
+            <span style="background: var(--accent); color: #1e3c5c; padding: 0.3rem 1.1rem; border-radius: 40px; font-weight: 600; font-size: 0.9rem;">
+                <i class="fas fa-trophy"></i> 5 лет опыта
+            </span>
+        </div>
+
+        <!-- ЦИТАТА / ДОСТИЖЕНИЯ В СПОРТЕ (настольный теннис + шахматы) -->
+        <div style="display: flex; flex-wrap: wrap; gap: 1.2rem; justify-content: space-between; margin: 2rem 0 0.8rem;">
+            <div style="display: flex; align-items: center; gap: 1rem; background: white; padding: 0.8rem 1.8rem; border-radius: 50px; box-shadow: 0 2px 10px rgba(0,0,0,0.02);">
+                <i class="fas fa-medal" style="color: #d4af37; font-size: 1.8rem;"></i>
+                <div><strong>турниры по теннису</strong><br>серебро «Кубок Поволжья» 2024</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 1rem; background: white; padding: 0.8rem 1.8rem; border-radius: 50px; box-shadow: 0 2px 10px rgba(0,0,0,0.02);">
+                <i class="fas fa-chess-board" style="color: #1e3c5c; font-size: 1.8rem;"></i>
+                <div><strong>блиц-шахматы</strong><br>3 место на Moscow Open 2023</div>
+            </div>
+        </div>
+
+        <!-- ССЫЛКИ / КОНТАКТ (ПОРТФОЛИО, ПРОФИЛИ) -->
+        <div class="contact-links">
+            <a href="#" class="btn"><i class="fab fa-github"></i> github / baibakov</a>
+            <a href="#" class="btn btn-highlight"><i class="fab fa-telegram"></i> Telegram</a>
+            <a href="#" class="btn"><i class="fas fa-envelope"></i> a.baibakov@example.com</a>
+            <a href="#" class="btn"><i class="fas fa-file-alt"></i> портфолио проектов</a>
+        </div>
+
+        <!-- ПОДПИСЬ / ДАТА (просто для оформления) -->
+        <div class="signature">
+            <i class="fas fa-chess-pawn" style="color: var(--accent);"></i>
+            всегда открыт для интересных задач — математических, алгоритмических, спортивных
+            <i class="fas fa-chess-pawn" style="color: var(--accent); margin-left: 6px;"></i>
+        </div>
+    </div>
+    <!-- лёгкий футер вне контейнера (опционально) -->
+    <div style="text-align: center; margin-top: 1.5rem; color: var(--text-light); font-size: 0.85rem;">
+        Алмаз Байбаков · портфолио · 2025
+    </div>
+</body>
+</html>
