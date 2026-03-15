@@ -38,6 +38,9 @@ jobs:
 
       - name: Add .nojekyll file
         run: | 
+          git config --global user.email "kirillisthebest369@gmail.com"
+          git config --global user.name "Aqua223"
+          
           touch docs/.nojekyll
           git add .
           git commit -m "add .nojekyll"
