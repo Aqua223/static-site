@@ -30,63 +30,20 @@ jobs:
           python-version: '3.x'
           cache: 'pip'
 
-      - name: Install dependencies
+      - name: Build
         run: |
-          pip install --upgrade pip
           pip install -r requirements.txt
-
-      - name: Build site
-        run: |
           cd source
           mkdocs build -d ../docs
 
-      - name: Create .nojekyll
-        run: |
-          touch docs/.nojekyll
-          echo "✅ .nojekyll created"
-
-      - name: Deploy to release branch (NO JEKYLL)
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          # Настройка git
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          
-          # Клонируем репозиторий
-          git clone https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git repo
-          cd repo
-          
-          # Переключаемся на release (создаем если нет)
-          if git ls-remote --heads origin release | grep -q release; then
-            git checkout release
-          else
-            git checkout --orphan release
-          fi
-          
-          # Удаляем ВСЕ файлы (включая скрытые)
-          rm -rf ./*
-          rm -rf .github 2>/dev/null || true
-          rm -rf .gitattributes 2>/dev/null || true
-          rm -rf .gitignore 2>/dev/null || true
-          
-          # Копируем новый сайт
-          cp -r ../docs/* .
-          
-          # Создаем .nojekyll (обязательно!)
-          touch .nojekyll
-          
-          # Создаем простой .gitignore
-          echo ".github/" > .gitignore
-          
-          # Добавляем все файлы
-          git add .
-          
-          # Коммитим и пушим
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "Deploy site from main: ${{ github.sha }}"
-            git push origin release --force
-            echo "✅ Deployed to release branch without Jekyll!"
-          fi
+      - name: Deploy to release branch
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
+          publish_branch: release
+          enable_jekyll: false
+          force_orphan: true
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+          commit_message: 'Deploy MkDocs site from main: ${{ github.sha }}'
