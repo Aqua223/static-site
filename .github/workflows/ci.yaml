@@ -5,8 +5,8 @@ on:
     branches:
       - main
     paths:
-      - 'source/docs/**'
-      - 'source/mkdocs.yml'
+      - 'docs/**'
+      - 'mkdocs.yml'
       - 'requirements.txt'
       - '.github/workflows/ci.yaml'
   workflow_dispatch:
@@ -38,20 +38,8 @@ jobs:
       - name: Build site
         run: |
           cd source
-          mkdocs build --verbose -d ../docs  # Используем site вместо docs
+          mkdocs build -d ../docs  # Используем site вместо docs
 
-      - name: Create .nojekyll and disable Jekyll completely
-        run: |
-          # Создаем .nojekyll
-          touch docs/.nojekyll
-          
-          # Создаем пустой _config.yml для отключения Jekyll
-          echo "# Jekyll disabled" > docs/_config.yml
-          echo "include: ['.nojekyll']" >> docs/_config.yml
-          
-          # Проверяем
-          echo "✅ Jekyll disabled files created:"
-          ls -la docs/ | grep -E "(.nojekyll|_config.yml)"
 
       - name: Deploy to release branch
         uses: peaceiris/actions-gh-pages@v3
@@ -59,7 +47,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs
           publish_branch: release
-          force_orphan: true
+          force_orphan: false
           enable_jekyll: false
           disable_nojekyll: false
           user_name: 'github-actions[bot]'
