@@ -38,26 +38,26 @@ jobs:
       - name: Build site
         run: |
           cd source
-          mkdocs build --verbose -d ../site  # Используем site вместо docs
+          mkdocs build --verbose -d ../docs  # Используем site вместо docs
 
       - name: Create .nojekyll and disable Jekyll completely
         run: |
           # Создаем .nojekyll
-          touch site/.nojekyll
+          touch docs/.nojekyll
           
           # Создаем пустой _config.yml для отключения Jekyll
-          echo "# Jekyll disabled" > site/_config.yml
-          echo "include: ['.nojekyll']" >> site/_config.yml
+          echo "# Jekyll disabled" > docs/_config.yml
+          echo "include: ['.nojekyll']" >> docs/_config.yml
           
           # Проверяем
           echo "✅ Jekyll disabled files created:"
-          ls -la site/ | grep -E "(.nojekyll|_config.yml)"
+          ls -la docs/ | grep -E "(.nojekyll|_config.yml)"
 
       - name: Deploy to release branch
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./site
+          publish_dir: ./docs
           publish_branch: release
           force_orphan: true
           enable_jekyll: false
