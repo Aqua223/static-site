@@ -38,7 +38,7 @@ jobs:
       - name: Build site
         run: |
           cd source
-          mkdocs build -d ../docs  # Используем site вместо docs
+          mkdocs build -d ../docs 
 
 
       - name: Deploy to release branch
@@ -47,7 +47,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs
           publish_branch: release
-          force_orphan: false
+          force_orphan: true
           enable_jekyll: false
           disable_nojekyll: false
           user_name: 'github-actions[bot]'
