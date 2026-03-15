@@ -5,12 +5,13 @@ on:
     branches:
       - main
     paths:
-      - 'source/docs/**'
-      - 'source/mkdocs.yml'
+      - 'docs/**'
+      - 'mkdocs.yml'
       - 'requirements.txt'
       - '.github/workflows/ci.yaml'
   workflow_dispatch:
 
+# Даем права на запись в содержимое репозитория
 permissions:
   contents: write
 
@@ -18,48 +19,66 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
+      # Шаг 1: Получаем исходники из ветки main
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           ref: main
           fetch-depth: 0
 
+      # Шаг 2: Устанавливаем Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.x'
           cache: 'pip'
 
-      - name: Build
+      # Шаг 3: Устанавливаем зависимости
+      - name: Install dependencies
         run: |
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
-          cd source
-          mkdocs build -d ../docs
+          pip list | grep mkdocs  # Проверяем установку
 
-      - name: Add .nojekyll file
+      # Шаг 4: Собираем сайт с MkDocs
+      - name: Build site with MkDocs
+        run: |
+          cd source
+          mkdocs build --verbose -d ../docs
+          cd ..
+          echo "✅ Site built successfully"
+
+      # Шаг 5: Создаем файл .nojekyll для отключения Jekyll
+      - name: Create .nojekyll file
         run: |
           touch docs/.nojekyll
           echo "✅ .nojekyll created in docs folder"
-
-      - name: Verify .nojekyll
-        run: |
+          
+          # Проверяем содержимое папки docs
           echo "📁 Contents of docs folder:"
           ls -la docs/
-          if [ -f docs/.nojekyll ]; then
-            echo "✅ SUCCESS: .nojekyll is present!"
+          
+          # Убеждаемся, что index.html существует
+          if [ -f docs/index.html ]; then
+            echo "✅ index.html found"
           else
-            echo "❌ ERROR: .nojekyll not found!"
-            exit 1
+            echo "⚠️ index.html not found, checking files:"
+            find docs/ -name "*.html" -type f | head -5
           fi
 
+      # Шаг 6: Деплоим в ветку release
       - name: Deploy to release branch
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs
           publish_branch: release
-          enable_jekyll: false
-          force_orphan: true
+          force_orphan: true  # Создает чистую ветку каждый раз
+          enable_jekyll: false  # Явно отключаем Jekyll
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
-          commit_message: 'Deploy MkDocs site from main: ${{ github.sha }}'
+          commit_message: |
+            Deploy MkDocs site from main
+            Commit: ${{ github.sha }}
+            Author: ${{ github.actor }}
+            Trigger: ${{ github.event_name }}
