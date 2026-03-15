@@ -5,13 +5,12 @@ on:
     branches:
       - main
     paths:
-      - 'docs/**'
-      - 'mkdocs.yml'
+      - 'source/docs/**'
+      - 'source/mkdocs.yml'
       - 'requirements.txt'
       - '.github/workflows/ci.yaml'
   workflow_dispatch:
 
-# Даем права на запись в содержимое репозитория
 permissions:
   contents: write
 
@@ -19,66 +18,50 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      # Шаг 1: Получаем исходники из ветки main
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           ref: main
           fetch-depth: 0
 
-      # Шаг 2: Устанавливаем Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.x'
           cache: 'pip'
 
-      # Шаг 3: Устанавливаем зависимости
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
+          pip install --upgrade pip
           pip install -r requirements.txt
-          pip list | grep mkdocs  # Проверяем установку
 
-      # Шаг 4: Собираем сайт с MkDocs
-      - name: Build site with MkDocs
+      - name: Build site
         run: |
           cd source
-          mkdocs build --verbose -d ../docs
-          cd ..
-          echo "✅ Site built successfully"
+          mkdocs build --verbose -d ../site  # Используем site вместо docs
 
-      # Шаг 5: Создаем файл .nojekyll для отключения Jekyll
-      - name: Create .nojekyll file
+      - name: Create .nojekyll and disable Jekyll completely
         run: |
-          touch docs/.nojekyll
-          echo "✅ .nojekyll created in docs folder"
+          # Создаем .nojekyll
+          touch site/.nojekyll
           
-          # Проверяем содержимое папки docs
-          echo "📁 Contents of docs folder:"
-          ls -la docs/
+          # Создаем пустой _config.yml для отключения Jekyll
+          echo "# Jekyll disabled" > site/_config.yml
+          echo "include: ['.nojekyll']" >> site/_config.yml
           
-          # Убеждаемся, что index.html существует
-          if [ -f docs/index.html ]; then
-            echo "✅ index.html found"
-          else
-            echo "⚠️ index.html not found, checking files:"
-            find docs/ -name "*.html" -type f | head -5
-          fi
+          # Проверяем
+          echo "✅ Jekyll disabled files created:"
+          ls -la site/ | grep -E "(.nojekyll|_config.yml)"
 
-      # Шаг 6: Деплоим в ветку release
       - name: Deploy to release branch
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
+          publish_dir: ./site
           publish_branch: release
-          force_orphan: true  # Создает чистую ветку каждый раз
-          enable_jekyll: false  # Явно отключаем Jekyll
+          force_orphan: true
+          enable_jekyll: false
+          disable_nojekyll: false
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
-          commit_message: |
-            Deploy MkDocs site from main
-            Commit: ${{ github.sha }}
-            Author: ${{ github.actor }}
-            Trigger: ${{ github.event_name }}
+          commit_message: 'Deploy MkDocs site from main: ${{ github.sha }}'
