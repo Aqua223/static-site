@@ -31,7 +31,7 @@ jobs:
         run: |
           pip install -r requirements.txt
           cd source
-          mkdocs build -d ../docs 
+          mkdocs build -d ../docs
 
       - name: Add .nojekyll file
         run: touch docs/.nojekyll
@@ -43,3 +43,4 @@ jobs:
           publish_dir: ./docs
           publish_branch: release
           enable_jekyll: false
+          force_orphan: true
