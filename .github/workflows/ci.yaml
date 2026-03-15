@@ -36,6 +36,22 @@ jobs:
           cd source
           mkdocs build -d ../docs
 
+      - name: Add .nojekyll file
+        run: |
+          touch docs/.nojekyll
+          echo "✅ .nojekyll created in docs folder"
+
+      - name: Verify .nojekyll
+        run: |
+          echo "📁 Contents of docs folder:"
+          ls -la docs/
+          if [ -f docs/.nojekyll ]; then
+            echo "✅ SUCCESS: .nojekyll is present!"
+          else
+            echo "❌ ERROR: .nojekyll not found!"
+            exit 1
+          fi
+
       - name: Deploy to release branch
         uses: peaceiris/actions-gh-pages@v3
         with:
