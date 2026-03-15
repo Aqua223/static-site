@@ -18,7 +18,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: release
+          ref: main
           fetch-depth: 0
 
       - name: Set up Python
@@ -27,18 +27,15 @@ jobs:
           python-version: '3.x'
           cache: 'pip'
 
-      - name: Install dependencies
+      - name: Build
         run: |
           pip install -r requirements.txt
           cd source
           mkdocs build -d ../docs 
-
-      - name: Build site
-        run: mkdocs build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs
-          publish_branch: release  # Ветка для опубликованного сайта
+          publish_branch: release
