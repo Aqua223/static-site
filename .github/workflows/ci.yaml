@@ -34,21 +34,24 @@ jobs:
         run: |
           pip install -r requirements.txt
           cd source
-          mkdocs build -d ../docs
+          mkdocs build -d ../site
 
       - name: Add .nojekyll file
-        run: | 
-          touch docs/.nojekyll
-        
+        run: |
+          touch site/.nojekyll
+          # Создаем пустой index.html если его нет (для теста)
+          if [ ! -f site/index.html ]; then
+            echo "<html><body>MkDocs Site</body></html>" > site/index.html
+          fi
+          echo "✅ .nojekyll created"
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy to release branch
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
+          publish_dir: ./site
           publish_branch: release
           enable_jekyll: false
-          disable_nojekyll: false
           force_orphan: true
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
