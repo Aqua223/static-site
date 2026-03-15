@@ -1,55 +1,20 @@
-name: Deploy MkDocs Site
+name: Publish docs via GitHub Pages
 
 on:
   push:
     branches:
       - main
-    paths:
-      - 'docs/**'
-      - 'mkdocs.yml'
-      - 'requirements.txt'
-      - '.github/workflows/ci.yaml'
-  workflow_dispatch:
-
-permissions:
-  contents: write
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          ref: main
-          fetch-depth: 0
+  - name: Build site
+    run: |
+      mkdocs build -f source/mkdocs.yaml -d docs
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'
-          cache: 'pip'
-
-      - name: Install dependencies
-        run: |
-          pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: Build site
-        run: |
-          cd source
-          mkdocs build -d ../docs 
-
-
-      - name: Deploy to release branch
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
-          publish_branch: release
-          force_orphan: true
-          enable_jekyll: false
-          disable_nojekyll: false
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
-          commit_message: 'Deploy MkDocs site from main: ${{ github.sha }}'
+  - name: Publish to release branch
+    uses: peaceiris/actions-gh-pages@v3
+    with:
+      github_token: ${{ secrets.GITHUB_TOKEN }}
+      publish_dir: ./docs
+      publish_branch: release
+      commit_message: "feat: автоматическое обновление сайта"
+      force_orphan: true
