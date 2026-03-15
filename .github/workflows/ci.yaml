@@ -11,6 +11,11 @@ on:
       - '.github/workflows/ci.yaml'
   workflow_dispatch:
 
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -43,4 +48,5 @@ jobs:
           publish_dir: ./docs
           publish_branch: release
           enable_jekyll: false
+          disable_nojekyll: false
           force_orphan: true
