@@ -215,20 +215,20 @@ if a.shape[1] != b.shape[0]:
 
 ## 6. Графики
 
-Гистограмма распределения оценок по математике
+### Гистограмма распределения оценок по математике
 
-![histogram](C:\Users\Almaz\PycharmProjects\py_second_semester\lab_2\plots\math_scores_histogram.png)
+![](resources/math_scores_histogram.png)
 
-Тепловая карта корреляции предметов
+### Тепловая карта корреляции предметов
 
-![heatmap](C:\Users\Almaz\PycharmProjects\py_second_semester\lab_2\plots\correlation_heatmap.png)
+![](resources/correlation_heatmap.png)
 
-График зависимости оценок по математике
+### График зависимости оценок по математике
 
-![scores](C:\Users\Almaz\PycharmProjects\py_second_semester\lab_2\plots\student_scores.png)
+![](resources/student_scores.png)
 
 ---
 
 ## 7. Тесты
 
-![Screenshot 2026-03-15 223546.png](../../../../../Pictures/Screenshots/Screenshot%202026-03-15%20223546.png)![Фото](![Screenshot 2026-03-15 223546.png](../../../../../Pictures/Screenshots/Screenshot%202026-03-15%20223546.png)C:\Users\Almaz\Pictures\Screenshots\Screenshot 2026-03-15 223546.png)
+![](resources/Screenshot%202026-03-15%20223546.png)
