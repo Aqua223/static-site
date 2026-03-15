@@ -1,8 +1,15 @@
 name: Publish docs via GitHub Pages
+
 on:
   push:
     branches:
       - main
+    paths:
+      - 'source/docs/**'
+      - 'source/mkdocs.yml'
+      - 'requirements.txt'
+      - '.github/workflows/ci.yaml'
+  workflow_dispatch:
 
 jobs:
   build:
@@ -10,7 +17,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout main
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
 
       - name: Python setup
         uses: actions/setup-python@v5
@@ -18,15 +28,24 @@ jobs:
           python-version: '3.12'
           cache: 'pip'
 
-      - run: |
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Deploy docs
-        uses: mhausenblas/mkdocs-deploy-gh-pages@master
-        # Or use mhausenblas/mkdocs-deploy-gh-pages@nomaterial to build without the mkdocs-material theme
+      - name: Build site
+        run: |
+          cd source
+          mkdocs build -d ../docs
+
+      - name: Deploy to release branch
+        uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs
           publish_branch: release
-          commit_message: "feat: автоматическое обновление сайта"
           force_orphan: true
+          enable_jekyll: false
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+          commit_message: "feat: automatic site update"
